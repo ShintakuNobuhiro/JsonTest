@@ -26,17 +26,22 @@ public class TestActivity extends Activity {
             }
             public void onPostExecute(final String result) {
                 // do something
-                Log.d("onPostExecute", result);
+                if (result != null)
+                    Log.d("result", result);
+                else
+                    Log.d("result", "null");
                 final Button btn = (Button) findViewById(R.id.button);
                 final TextView textView = (TextView) findViewById(R.id.textView);
+                final String[] description = new String[2];
                 try {
                     JSONObject json = new JSONObject(result);
                     JSONArray missions = json.getJSONArray("missions");
-                    String description = null;
-                    for (int i = 0; i < missions.length(); i++) {
+
+                for (int i = 0; i < missions.length(); i++) {
                         JSONObject mission = missions.getJSONObject(i);
                         String category = mission.getString("category");
-                        description = mission.getString("description");
+                        Log.d("", category);
+                        description[i] = mission.getString("description");
                         String exp = mission.getString("exp");
                     }
                 } catch (JSONException e) {
@@ -45,7 +50,7 @@ public class TestActivity extends Activity {
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        textView.setText(result);
+                        textView.setText(description[0]);
                     }
                 });
             }
